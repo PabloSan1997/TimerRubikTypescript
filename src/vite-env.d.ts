@@ -16,12 +16,20 @@ type ValoresContexto = {
     play:boolean,
     setPlay:SetPlay,
     jugadas:Jugadas[],
-    setJugadas:SetJugadas
-
+    setJugadas:SetJugadas,
+    algoritmo:string,
+    resultado:Resultado
 }
 
 type Jugadas = {
     id:number,
     tiempo:number,
     algoritmo:string
+}
+
+type Resultado = {
+    media:number,
+    mejor:number,
+    peor:number,
+    avg5:number
 }

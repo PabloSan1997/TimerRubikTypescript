@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import { MiContexto } from '../contexto'
 import { convertirTiempo } from '../utilities/convertirTiempo';
 
@@ -19,7 +18,7 @@ export function PantallaCronometro() {
         }
         document.addEventListener("keyup", activar);
         document.addEventListener("keypress", desactivar);
-    }, []);
+    }, [setPlay]);
     return (
         <div className='w-full h-[200px] bg-miColor flex'>
             <p className='text-white text-[7rem] m-auto'>{convertirTiempo(tiempo)}</p>

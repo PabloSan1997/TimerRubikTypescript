@@ -1,4 +1,6 @@
 import React from 'react';
+import { generarAlgoritmo } from '../utilities/generarAlgoritmo';
+import { generarResultado } from '../utilities/generarResultados';
 
 const Contexto = React.createContext({});
 
@@ -8,10 +10,16 @@ export function ProvedroContexto({ children }: Contexto): JSX.Element {
     const [intervalo, setIntervalo] = React.useState<NodeJS.Timer>();
     const [jugadas, setJugadas] = React.useState<Jugadas[]>([]);
     const [numTiro, setNumTiro] = React.useState(0);
+    const [algoritmo, setAlgoritmo] = React.useState<string>(generarAlgoritmo());
+    const [resultado, setResultado] = React.useState<Resultado>({
+        media:0,
+        mejor:0,
+        peor:0,
+        avg5:0
+    });
     let intervaloA: NodeJS.Timer;
     React.useEffect(() => {
         const tiempoInicio: Date = new Date();
-
         if (play) {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             intervaloA = setInterval(() => {
@@ -29,12 +37,13 @@ export function ProvedroContexto({ children }: Contexto): JSX.Element {
                 const id = numTiro+1;
                 const tiro: Jugadas = {
                     id,
-                    algoritmo: "R E S E S S R S C E S E S E S D E S D E S D",
+                    algoritmo,
                     tiempo
                 }
                 const cadena = [...jugadas];
                 cadena[numTiro] = tiro;
-                setJugadas(cadena)
+                setJugadas(cadena);
+                setAlgoritmo(generarAlgoritmo());
                 if(numTiro==4){
                     setNumTiro(0);
                 }
@@ -43,7 +52,13 @@ export function ProvedroContexto({ children }: Contexto): JSX.Element {
                 }
             }
         }
-    }, [play])
+    }, [play]);
+
+    React.useEffect(()=>{
+        if(jugadas.length===5){
+            setResultado(generarResultado(jugadas));
+        }
+    },[jugadas]);
     return (
         <Contexto.Provider
             value={{
@@ -51,7 +66,9 @@ export function ProvedroContexto({ children }: Contexto): JSX.Element {
                 setPlay,
                 play,
                 jugadas,
-                setJugadas
+                setJugadas,
+                algoritmo,
+                resultado
             }}
         >
             {children}
